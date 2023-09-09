@@ -1,0 +1,18 @@
+<h1>Minesweeper</h1>
+<button (click)="newGame()">Start new game</button>
+
+<h2 *ngIf="!win">
+    40 mines total!
+</h2>
+<h2 *ngIf="win != null">
+    You {{ win ? "won!" : "lost!"}}
+</h2>
+
+<main>
+    <app-square
+        *ngFor = "let val of squares; let i = index;"
+        [value]="val"
+        (click) = "makeMove(i)">
+    </app-square>
+</main>
+

@@ -1,0 +1,9 @@
+main {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 0; // Optional: gap between cells
+}
+app-square {
+    border: 1px gray solid;
+    height: 40px;
+}
