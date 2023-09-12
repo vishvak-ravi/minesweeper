@@ -1,9 +1,22 @@
-main {
+.main-flex {
+    display: flex;
+    flex-direction: column;
+    width: 1200px !important;
+    height: 1200px !important;
+    padding: 50px;
+    position: absolute;
+    align-items: center;
+}
+
+.game-board {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
-    gap: 0; // Optional: gap between cells
+    gap: 1px; // Optional: gap between cells\
+    width: 100%; // Padding included
+    height: 100%; // Padding included
+    box-sizing: border-box;
+    padding: 30px;
 }
 app-square {
-    border: 1px gray solid;
-    height: 40px;
+    aspect-ratio: 1/1;
 }
