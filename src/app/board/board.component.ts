@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardComponent {
   truth!: any[];
-  squares!: any[];
+  revealed!: any[];
   gameOver: boolean = false;
   isWin: boolean = false;
   mines = 40;
@@ -29,7 +29,8 @@ export class BoardComponent {
     for (let i = 0; i < this.truth.length; i++) {
       if (this.truth[i] == "") this.countNeighbors(i);
     }
-    this.squares = Array(this.length * this.width).fill("");
+    this.revealed = Array(this.length * this.width).fill(false);
+
   }
   countNeighbors(index: number) {
     const x = index % this.width;
@@ -58,11 +59,11 @@ export class BoardComponent {
   }
   
   makeMove(idx: number) {
-    if (this.squares[idx] == "F") return;
+    if (this.revealed[idx] == "F" || this.revealed[idx] == true) return;
     
-    this.squares.splice(idx, 1, this.truth[idx]);
+    this.revealed[idx] = true;
     
-    if (this.squares[idx] == "0") {
+    if (this.truth[idx] == "0") {
       this.revealAdjacentZeros(idx);
     }
     this.checkWinorLoss(idx);
@@ -92,10 +93,9 @@ export class BoardComponent {
       // Boundary check
       if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
         // Skip if already revealed
-        if (this.truth[newIdx] != "F" && this.squares[newIdx] == "") {
-          this.squares.splice(newIdx, 1, this.truth[newIdx]);
-  
+        if (this.revealed[newIdx] == false) {
           // If it's a zero, continue revealing
+          this.revealed[newIdx] = true;
           if (this.truth[newIdx] == "0") {
             this.revealAdjacentZeros(newIdx);
           }
@@ -105,18 +105,27 @@ export class BoardComponent {
   }
   
   checkWinorLoss(idx: number) {
-    if (this.squares[idx] == "X") {
+    if (this.truth[idx] == "X") {
       this.gameOver = true;
       this.isWin = false;
     }
     for (let i = 0; i < (this.length * this.width); i++) {
-      if (this.truth[i] != "X" && this.squares[i] == "") return; 
+      if (this.truth[i] != "X" && this.revealed[i] == false) return; 
     }
     this.gameOver = true;
     this.isWin = true;
   }
   flag(idx: number, event:MouseEvent) {
     event.preventDefault();
-    this.squares[idx] = (this.squares[idx] != "F") ? "F" : "";
+    if (this.revealed[idx] == true) return;
+    this.revealed[idx] = "F";
+   }
+  getColor(idx: number) {
+    if (this.revealed[idx] == false || this.revealed[idx] == "F") return "accent";
+    else return "green";
+  }
+  getVal(idx: number) {
+    if (this.revealed[idx] == "F") return "F";
+    return (this.revealed[idx] && this.truth[idx] != "0") ? this.truth[idx] : "";
   }
 }
