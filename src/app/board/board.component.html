@@ -1,9 +1,15 @@
 <main>
     <div class="main-flex">
-        <h1 style="color: white;">Minesweeper</h1>
-        <button class="new-game" mat-flat-button (click)="newGame()">Start new game</button>
-
-        <h2 *ngIf="gameOver">
+        <div class="toolbar">
+            <div class="toolbar-items">               
+                <span class="inner-toolbar-item"> {{flagsLeft}} </span>
+            </div>
+            <button class="new-game" mat-flat-button (click)="newGame()">Start new game</button>
+            <div class="toolbar-items">
+                <span class="inner-toolbar-item"> {{time}} </span>
+            </div>
+        </div>
+        <h2 style="color: white;" *ngIf="gameOver">
             You {{ isWin ? "won!" : "lost!"}}
         </h2>
         

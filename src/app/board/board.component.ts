@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -11,15 +12,23 @@ export class BoardComponent {
   gameOver: boolean = false;
   isWin: boolean = false;
   mines = 40;
-  length = 16
-  width = 16
+  length = 16;
+  width = 16;
+  time = 0;
+  flagsLeft = 40;
+  timerId: any;
+
 
   constructor() {}
 
   ngOnInit() {
     this.newGame();
+    this.timerId = setInterval(() => {
+      this.time++;
+    }, 1000);
   }
   newGame() {
+    this.time = 0;
     this.gameOver = false;
     this.truth = Array((this.length * this.width) - this.mines).fill("");
     for (let i = 0; i < this.mines; i++) {
@@ -120,7 +129,14 @@ export class BoardComponent {
     event.preventDefault();
     if (this.gameOver) return;
     if (this.revealed[idx] == true) return;
-    this.revealed[idx] = this.revealed[idx] == "F" ? false : "F";
+    if (this.revealed[idx] == "F") {
+      this.revealed[idx] = false;
+      this.flagsLeft++;
+    }
+    else {
+      this.revealed[idx] = "F";
+      this.flagsLeft--;
+    }
    }
   getColor(idx: number) {
     if (this.revealed[idx] == true && this.truth[idx] == "X") return "#FF0000"
