@@ -59,6 +59,7 @@ export class BoardComponent {
   }
   
   makeMove(idx: number) {
+    if (this.gameOver) return;
     if (this.revealed[idx] == "F" || this.revealed[idx] == true) return;
     
     this.revealed[idx] = true;
@@ -117,13 +118,54 @@ export class BoardComponent {
   }
   flag(idx: number, event:MouseEvent) {
     event.preventDefault();
+    if (this.gameOver) return;
     if (this.revealed[idx] == true) return;
-    this.revealed[idx] = "F";
+    this.revealed[idx] = this.revealed[idx] == "F" ? false : "F";
    }
   getColor(idx: number) {
-    if (this.revealed[idx] == false || this.revealed[idx] == "F") return "accent";
-    else return "green";
+    if (this.revealed[idx] == true && this.truth[idx] == "X") return "#FF0000"
+    if (this.revealed[idx] == false || this.revealed[idx] == "F") return "primary";
+    else return "black";
   }
+  getTextColor(idx: number) {
+    let val: string = this.truth[idx];
+    let color: string;
+    if (this.revealed[idx] == "F") return "#FFFFFF"
+    switch (val) {
+      case "1":
+        color = "#4d4dff"; // Neon Blue
+        break;
+      case "2":
+        color = "#0FFF00"; // Neon Green
+        break;
+      case "3":
+        color = "#FF000D"; // Neon Red
+        break;
+      case "4":
+        color = "#FFF700"; // Neon Yellow
+        break;
+      case "5":
+        color = "#FF69B4"; // Neon Pink
+        break;
+      case "6":
+        color = "#FFA500"; // Neon Orange
+        break;
+      case "7":
+        color = "#9400D3"; // Neon Purple
+        break;
+      case "8":
+        color = "#00FFFF"; // Neon Teal
+        break;
+      case "X":
+        color = this.revealed[idx] == true ? "#000000" : "#FFFFFF"
+        break;
+      default:
+        color = "#FFFFFF"; // Default to white if none of the cases match
+        break;
+    }
+    return color;
+  }
+  
   getVal(idx: number) {
     if (this.revealed[idx] == "F") return "F";
     return (this.revealed[idx] && this.truth[idx] != "0") ? this.truth[idx] : "";

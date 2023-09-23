@@ -1,7 +1,7 @@
 <main>
     <div class="main-flex">
-        <h1>Minesweeper</h1>
-        <button class="new-game" mat-flat-button color = "primary" (click)="newGame()">Start new game</button>
+        <h1 style="color: white;">Minesweeper</h1>
+        <button class="new-game" mat-flat-button (click)="newGame()">Start new game</button>
 
         <h2 *ngIf="gameOver">
             You {{ isWin ? "won!" : "lost!"}}
@@ -16,6 +16,7 @@
                     *ngFor = "let dummy of revealed; let i = index;"
                     [value]="getVal(i)"
                     [color]="getColor(i)"
+                    [textColor]="getTextColor(i)"
                     (click) = "makeMove(i)"
                     (contextmenu) = "flag(i, $event)">
                 </app-square>
